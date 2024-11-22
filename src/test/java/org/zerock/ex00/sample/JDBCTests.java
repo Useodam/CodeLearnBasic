@@ -1,4 +1,4 @@
-package sample;
+package org.zerock.ex00.sample;
 
 import org.junit.jupiter.api.Test;
 
