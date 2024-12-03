@@ -1,4 +1,4 @@
-package org.zerock.ex00;
+package org.zerock.ex00.sample;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
