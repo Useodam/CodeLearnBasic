@@ -29,4 +29,9 @@ public class BoardService {
     public List<BoardVO> list() {
         return boardMapper.getList();
     }
+
+    public BoardVO get(Long bno) {
+        BoardVO boardVO = new BoardVO();
+        return boardVO;
+    }
 }
