@@ -41,14 +41,14 @@
                     <th>UpdateDate</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="tbody">
                     <c:forEach var="board" items="${list}">
-                        <tr>
-                            <th><c:out value="${board.bno}" /></th>
-                            <th><c:out value="${board.title}" /></th>
-                            <th><c:out value="${board.writer}" /></th>
-                            <th><c:out value="${board.regDate}" /></th>
-                            <th><c:out value="${board.updateDate}" /></th>
+                        <tr data-bno="${board.bno}">
+                            <td><c:out value="${board.bno}" /></td>
+                            <td><c:out value="${board.title}" /></td>
+                            <td><c:out value="${board.writer}" /></td>
+                            <td><c:out value="${board.regDate}" /></td>
+                            <td><c:out value="${board.updateDate}" /></td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -91,6 +91,13 @@
     if(result){
         myModal.show()
     }
+
+    document.querySelector('.tbody').addEventListener("click", (e) => {
+        const target = e.target.closest("tr")
+        const bno = target.dataset.bno
+
+        window.location = `/board/read/\${bno}`
+    })
 </script>
 
 <%@include file="../includes/end.jsp"%>

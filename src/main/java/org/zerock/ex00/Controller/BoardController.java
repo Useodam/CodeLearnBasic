@@ -63,7 +63,7 @@ public class BoardController {
         }
 
         BoardVO boardVO = boardService.get(bno);
-        model.addAttribute("board", boardVO);
+        model.addAttribute("vo", boardVO);
         return "/board/"+job;
     }
 
@@ -78,6 +78,37 @@ public class BoardController {
         rttr.addFlashAttribute("Result", 123L);
 
         return "redirect:/board/list";
+    }
+
+    @PostMapping("/remove/{bno")
+    public String remove(
+            @PathVariable(name = "bno") Long bno,
+            RedirectAttributes rttr){
+
+        BoardVO boardVO = new BoardVO();
+        boardVO.setBno(bno);
+        boardVO.setTitle("해당 글은 삭제되었습니다");
+        boardVO.setContent("해당 글은 삭제되었습니다");
+        boardVO.setWriter("unknown");
+
+        boardService.modify(boardVO);
+
+        rttr.addFlashAttribute("result", boardVO.getBno());
+
+        return "redirect:/board/list";
+    }
+
+    @PostMapping("/modify/{bno")
+    public String modify(
+            @PathVariable(name = "bno") Long bno,
+            BoardVO boardVO){
+
+        boardVO.setBno(bno);
+
+        boardService.modify(boardVO);
+
+
+        return "redirect:/board/read/" + bno;
     }
 
 }

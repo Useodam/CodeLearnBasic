@@ -31,7 +31,14 @@ public class BoardService {
     }
 
     public BoardVO get(Long bno) {
-        BoardVO boardVO = new BoardVO();
-        return boardVO;
+        return boardMapper.select(bno);
+    }
+
+    public boolean modify(BoardVO boardVO) {
+        return boardMapper.update(boardVO) == 1;
+    }
+
+    public boolean remove(Long bno) {
+        return true;
     }
 }
