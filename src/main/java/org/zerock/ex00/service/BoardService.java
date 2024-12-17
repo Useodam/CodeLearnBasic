@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.ex00.domain.BoardVO;
+import org.zerock.ex00.domain.Criteria;
 import org.zerock.ex00.mappers.BoardMapper;
 
 import java.util.List;
@@ -40,5 +41,9 @@ public class BoardService {
 
     public boolean remove(Long bno) {
         return true;
+    }
+
+    public List<BoardVO> getList(Criteria criteria) {
+        return boardMapper.getPage(criteria);
     }
 }
