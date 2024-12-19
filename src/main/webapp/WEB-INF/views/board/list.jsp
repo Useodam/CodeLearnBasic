@@ -31,8 +31,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            ${cri}
-
+            ${pageMaker}
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
@@ -55,6 +54,29 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <div>
+
+                <ul class="pagination">
+                    <c:if test="${pageMaker.prev}">
+                    <li class="page-item">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li
+                    </c:if>
+
+                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
+                    <li class="page-item ${cri.pageNum == num ? 'active' : ''}">
+                        <a class="page-link" href="#">${num} </a>
+                    </li>
+                    </c:forEach>
+
+                    <c:if test="${pageMaker.next}">
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                    </c:if>
+                </ul>
+
+            </div>
         </div>
     </div>
 </div>

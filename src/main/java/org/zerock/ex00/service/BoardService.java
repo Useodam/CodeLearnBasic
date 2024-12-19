@@ -46,4 +46,8 @@ public class BoardService {
     public List<BoardVO> getList(Criteria criteria) {
         return boardMapper.getPage(criteria);
     }
+
+    public int getTotal(Criteria criteria) {
+        return boardMapper.getTotal(criteria);
+    }
 }

@@ -27,6 +27,10 @@
         limit #{skip}, #{amount}
     </select>
 
+    <select id="getTotal" resultType="int">
+        select count(bno) from tbl_board
+    </select>
+
     <update id="update">
         update tbl_board set title = #{title}, content = #{content}, updateDate = now() where bno = #{bno}
     </update>
