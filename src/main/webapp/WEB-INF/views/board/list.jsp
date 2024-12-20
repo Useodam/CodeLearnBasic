@@ -31,6 +31,12 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
+
+            <form id="actionForm" method="get" action="/board/list">
+                <input type="hidden" name="pageNum" value="${cri.pageNum}">
+                <input type="hidden" name="amount" value="${cri.amount}">
+            </form>
+
             ${pageMaker}
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -59,19 +65,19 @@
                 <ul class="pagination">
                     <c:if test="${pageMaker.prev}">
                     <li class="page-item">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        <a class="page-link" href="${pageMaker.startPage - 1}" tabindex="-1">Previous</a>
                     </li
                     </c:if>
 
                     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
                     <li class="page-item ${cri.pageNum == num ? 'active' : ''}">
-                        <a class="page-link" href="#">${num} </a>
+                        <a class="page-link" href="${num}">${num} </a>
                     </li>
                     </c:forEach>
 
                     <c:if test="${pageMaker.next}">
                     <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
+                        <a class="page-link" href="${pageMaker.endPage + 1}">Next</a>
                     </li>
                     </c:if>
                 </ul>
@@ -116,12 +122,37 @@
         myModal.show()
     }
 
+    const actionForm = document.querySelector("#actionForm")
+
     document.querySelector('.tbody').addEventListener("click", (e) => {
         const target = e.target.closest("tr")
         const bno = target.dataset.bno
 
-        window.location = `/board/read/\${bno}`
-    })
+        const before = document.querySelector("#clonedActionForm")
+
+        if(before){
+            before.remove()
+        }
+
+        const clonedActionForm = actionForm.cloneNode(true)
+        clonedActionForm.setAttribute("action", `/board/read/\${bno}`)
+        clonedActionForm.setAttribute("id", 'clonedActionForm')
+
+        document.body.append(clonedActionForm)
+        clonedActionForm.submit()
+    }, false)
+
+    document.querySelector(".pagination").addEventListener("click", (e) => {
+        e.preventDefault()
+        const target = e.target
+        console.log(target)
+
+        const targetPage = target.getAttribute("href")
+
+        actionForm.setAttribute("action", "/board/list")
+        actionForm.querySelector("input[name='pageNum'").value = target
+        actionForm.submit()
+    }, false)
 </script>
 
 <%@include file="../includes/end.jsp"%>

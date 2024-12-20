@@ -11,6 +11,7 @@
     </div>
     <div class="card-body">
         <form id="actionform" action="/board/modify" method="post">
+
         <div class="input-group input-group-lg">
             <div class="input-group-prepend">
                 <span class="input-group-text">Bno</span>
@@ -53,6 +54,10 @@
             <button type="submit" class="btn btn-danger btnRemove">Remove</button>
         </div>
 
+        <form id="listForm" action="/board/list">
+            <input type="hidden" name="pageNum" value="${cri.pageNum}">
+            <input type="hidden" name="amount" value="${cri.amount}">
+        </form>
 
 
 <%@include file="../includes/footer.jsp"%>
@@ -61,9 +66,12 @@
 
     const bno = `${vo.bno}`
     const actionForm = document.querySelector("#actionForm")
+    const listForm = document.querySelector("#listForm")
 
     document.querySelector(".btnList").addEventListener("click", (e) => {
-        window.location="/board/list"
+        e.preventDefault()
+        e.stopPropagation()
+        listForm.submit()
     }, false)
 
     document.querySelector(".btnModify").addEventListener("click", (e) => {
