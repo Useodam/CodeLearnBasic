@@ -30,11 +30,31 @@
         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
     </div>
     <div class="card-body">
+        <div>
+            <select name='typeSelect'>
+                <option value="" >--</option>
+                <option value="T" ${cri.typeStr == 'T' ? 'selected' : ''}>제목</option>
+                <option value="C" ${cri.typeStr == 'C' ? 'selected' : ''}>내용</option>
+                <option value="W" ${cri.typeStr == 'W' ? 'selected' : ''}>작성자</option>
+                <option value="TC" ${cri.typeStr == 'TC' ? 'selected' : ''}>제목 or 내용</option>
+                <option value="TW" ${cri.typeStr == 'TW' ? 'selected' : ''}>제목 or 작성자</option>
+                <option value="TCW" ${cri.typeStr == 'TCW' ? 'selected' : ''}>제목 or 내용 or 작성자</option>
+            </select>
+            <input type='text' name='keywordInput' value="<c:out value="${cri.keyword}"/>" />
+            <button class='btn btn-default searchBtn'>Search</button>
+        </div>
+
         <div class="table-responsive">
 
             <form id="actionForm" method="get" action="/board/list">
                 <input type="hidden" name="pageNum" value="${cri.pageNum}">
                 <input type="hidden" name="amount" value="${cri.amount}">
+                <c:if test="${cri.types != null && cri.keyword != null}">
+                    <c:forEach var="type" items="${cri.types}">
+                        <input type="hidden" name="types" value="${type}">
+                    </c:forEach>
+                    <input type="hidden" name="keyword" value="<c:out value="${cri.keyword}"/> ">
+                </c:if>
             </form>
 
             ${pageMaker}
@@ -112,7 +132,7 @@
 <%@include file="../includes/footer.jsp"%>
 
 <script>
-    const result = '${Result}'
+    const result = '${result}'
 
     const myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
 
@@ -150,9 +170,44 @@
         const targetPage = target.getAttribute("href")
 
         actionForm.setAttribute("action", "/board/list")
-        actionForm.querySelector("input[name='pageNum'").value = target
+        actionForm.querySelector("input[name='pageNum']").value = target
         actionForm.submit()
     }, false)
+
+    document.querySelector(".searchBtn").addEventListener("click", (e)=>{
+        e.preventDefault()
+        e.stopPropagation()
+
+        const selectObj = document.querySelector("select[name='typeSelect']")
+
+        const selectValue = selectObj.options[selectObj.selectedIndex].value
+
+        const arr = selectValue.split("")
+
+        console.log(arr)
+
+        //actionForm에 hidden태그로 만들어서 검색 조건 추가
+        //페이지 번호도 1페이지로
+        //amount도 새로 만들자
+
+        let str = ''
+
+        str = `<input type='hidden' name='pageNum' value=1>`
+        str += `<input type='hidden' name='amount' value=${cri.amount}>`
+
+        if(arr && arr.length > 0){
+            for (const type of arr) {
+                str += `<input type='hidden' name='types' value=\${type}>`
+            }
+        }
+        const keywordValue = document.querySelector("input[name='keywordInput']").value
+        str += `<input type='hidden' name='keyword' value='\${keywordValue}'>`
+
+        actionForm.innerHTML = str
+
+        actionForm.submit()
+    }, false)
+
 </script>
 
 <%@include file="../includes/end.jsp"%>
